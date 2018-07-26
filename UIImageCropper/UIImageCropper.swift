@@ -221,7 +221,7 @@ public class UIImageCropper: UIViewController, UIImagePickerControllerDelegate, 
 		orgHeight = imageHeightConst!.constant
 	}
 
-	override func viewDidAppear(_ animated: Bool) {
+	override public func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 
 		if self.autoClosePicker {
