@@ -221,14 +221,6 @@ public class UIImageCropper: UIViewController, UIImagePickerControllerDelegate, 
 		orgHeight = imageHeightConst!.constant
 	}
 
-	override public func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-
-		if self.autoClosePicker {
-			self.picker?.dismiss(animated: true, completion: nil)
-		}
-	}
-
 	private func maskFadeView() {
 		let path = UIBezierPath(rect: cropView.frame)
 		path.append(UIBezierPath(rect: fadeView.frame))
@@ -240,9 +232,13 @@ public class UIImageCropper: UIViewController, UIImagePickerControllerDelegate, 
 
 	//MARK: - button actions
 	@objc func cropDone() {
-		self.dismiss(animated: false, completion: {
-			self.delegate?.didCropImage(originalImage: self.image, croppedImage: self.cropImage)
-		})
+		self.dismiss(animated: false, completion: nil)
+
+		if self.autoClosePicker {
+			self.picker?.dismiss(animated: true, completion: nil)
+		}
+
+		self.delegate?.didCropImage(originalImage: self.image, croppedImage: self.cropImage)
 	}
 
 	@objc func cropCancel() {
