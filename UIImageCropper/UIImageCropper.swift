@@ -255,7 +255,7 @@ public class UIImageCropper: UIViewController, UIImagePickerControllerDelegate, 
 		let scale = pinch.scale
 		let height = max(orgHeight * scale, cropView.frame.height)
 		let width = max(orgWidth * scale, cropView.frame.height / ratio)
-		if height > cropView.bounce.height && width > cropView.bounce.width {
+		if height > cropView.bounds.height && width > cropView.bounds.width {
 			imageHeightConst?.constant = height
 			imageWidthConst?.constant = width
 		}
