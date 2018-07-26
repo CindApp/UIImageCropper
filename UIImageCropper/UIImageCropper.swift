@@ -183,6 +183,10 @@ public class UIImageCropper: UIViewController, UIImagePickerControllerDelegate, 
 		topView.layoutIfNeeded()
 	}
 
+	public override var prefersStatusBarHidden: Bool {
+		return true
+	}
+
 	override public func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 
@@ -228,13 +232,13 @@ public class UIImageCropper: UIViewController, UIImagePickerControllerDelegate, 
 
 	//MARK: - button actions
 	@objc func cropDone() {
-		if self.autoClosePicker {
-			self.picker?.dismiss(animated: true, completion: nil)
-		}
+		self.dismiss(animated: false, completion: {
+			if self.autoClosePicker {
+				self.picker?.dismiss(animated: true, completion: nil)
+			}
 
-		self.delegate?.didCropImage(originalImage: self.image, croppedImage: self.cropImage)
-
-		self.dismiss(animated: false, completion: nil)
+			self.delegate?.didCropImage(originalImage: self.image, croppedImage: self.cropImage)
+		})
 	}
 
 	@objc func cropCancel() {
@@ -251,8 +255,10 @@ public class UIImageCropper: UIViewController, UIImagePickerControllerDelegate, 
 		let scale = pinch.scale
 		let height = max(orgHeight * scale, cropView.frame.height)
 		let width = max(orgWidth * scale, cropView.frame.height / ratio)
-		imageHeightConst?.constant = height
-		imageWidthConst?.constant = width
+		if height > cropView.bounce.height && width > cropView.bounce.width {
+			imageHeightConst?.constant = height
+			imageWidthConst?.constant = width
+		}
 	}
 
 	@objc func pan(_ pan: UIPanGestureRecognizer) {
